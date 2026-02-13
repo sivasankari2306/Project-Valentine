@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Queen 💚</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-bg: #f9d5e5;
+            --card-white: #ffffff;
+            --accent-pink: #ff4d6d;
+            --text-grey: #4a4a4a;
+            --envelope-color: #f3e5ab;
+        }
+
+        body {
+            background-color: var(--pink-bg);
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: var(--card-white);
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            transition: 0.3s ease-in-out;
+        }
+
+        .hidden { display: none !important; }
+
+        img.main-gif { width: 140px; border-radius: 15px; margin-bottom: 1rem; }
+
+        h1 { color: var(--accent-pink); font-size: 1.4rem; margin-bottom: 20px;}
+
+        /* --- HEARTBEAT ANIMATION --- */
+        .ily-text {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--accent-pink);
+            margin: 15px 0;
+            display: inline-block;
+            animation: heartBeat 1.5s infinite ease-in-out;
+            text-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s ease; /* Faster transition for the dodge effect */
+            margin: 5px;
+        }
+
+        .btn-yes { background: #ff4d6d; color: white; }
+        .btn-no { background: #6c757d; color: white; position: relative; }
+        .btn-p { background: var(--accent-pink); color: white; width: 100%; margin-top: 15px; }
+
+        /* --- PROS & CONS (SWIPER) --- */
+        .pros-cons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .box { background: #fffcfd; border: 1px solid #ffdeeb; border-radius: 15px; padding: 15px; min-height: 180px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        .swiper-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+        .swiper-btn { background: #ffecf1; color: var(--accent-pink); border: 1px solid var(--accent-pink); width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .dots { display: flex; gap: 4px; }
+        .dot { width: 6px; height: 6px; background: #ffd1dc; border-radius: 50%; transition: 0.3s; }
+        .dot.active { background: var(--accent-pink); width: 12px; border-radius: 10px; }
+
+        /* --- ENVELOPE (GIFT 2) --- */
+#giftLetter { 
+        min-height: 550px; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; /* Centered for better look */
+        padding-top: 20px; 
+    }
+       .envelope-wrapper { 
+        position: relative; 
+        width: 250px; /* Slightly wider for longer text */
+        height: 160px; 
+        background: var(--envelope-color); 
+        margin-top: 100px; /* Space for the letter to pop up */
+        border-radius: 0 0 10px 10px; 
+        cursor: pointer; 
+        transition: 0.5s; 
+    }
+
+    .envelope-wrapper::before { 
+        content: ""; 
+        position: absolute; 
+        top: -90px; 
+        left: 0; 
+        border-left: 125px solid transparent; 
+        border-right: 125px solid transparent; 
+        border-bottom: 90px solid var(--envelope-color); 
+        transition: 0.5s; 
+        z-index: 3; 
+        transform-origin: bottom; 
+    }
+
+    .letter-content { 
+        position: absolute; 
+        bottom: 10px; 
+        left: 5%; 
+        width: 90%; 
+        height: 250px; /* Fixed height for long content */
+        background: white; 
+        padding: 20px; 
+        border-radius: 5px; 
+        box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+        transition: 0.8s; 
+        z-index: 1; 
+        opacity: 0; 
+        text-align: left; 
+        font-size: 0.85rem; 
+        line-height: 1.5; 
+        overflow-y: auto; /* Adds scrollbar only if text is long */
+    }
+
+    .letter-content::-webkit-scrollbar { width: 5px; }
+    .letter-content::-webkit-scrollbar-thumb { background: var(--accent-pink); border-radius: 10px; }
+        
+        .heart-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: var(--accent-pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; z-index: 10; font-size: 20px; border: 3px solid white; }
+       
+       .envelope-wrapper.open::before { transform: rotateX(180deg); z-index: 0; }
+       .envelope-wrapper.open .letter-content { 
+        opacity: 1; 
+        transform: translateY(-240px); /* Adjust based on height */
+        z-index: 5; 
+    }
+        .envelope-wrapper.open .heart-btn { opacity: 0; pointer-events: none; }
+
+        /* --- MUSIC PLAYER --- */
+        #main-player { background: #fff0f3; padding: 15px; border-radius: 15px; border: 1px solid var(--accent-pink); margin-bottom: 15px; }
+        .playlist-container { max-height: 250px; overflow-y: auto; text-align: left; background: #fff; border-radius: 10px; padding: 5px;}
+        .playlist-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 0.85rem;}
+
+        /* --- PHOTO GRID --- */
+        .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-height: 400px; overflow-y: auto; padding: 10px; }
+        .photo-card { background: white; padding: 8px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .photo-card img { width: 100%; border-radius: 5px; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 8px; }
+        .photo-card p { font-size: 0.7rem; margin: 0; color: var(--text-grey); font-weight: bold; }
+
+        .gift-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .gift-box { cursor: pointer; background: #fff; border: 1px solid #ffe5ec; padding: 15px; border-radius: 15px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="section1">
+        <img class="main-gif" src="">
+        <h1>MEENU KUTTY. <br> Will you be my Valentine? 💚</h1>
+        <div class="buttons" style="min-height: 60px;">
+            <button class="btn btn-yes" onclick="showSection('sectionSuccess')">YES</button>
+            <button id="noBtn" class="btn btn-no" onmouseover="dodgeNo()" onclick="dodgeNo()">NO</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="sectionPerks">
+        <img class="main-gif" src="">
+        <p>Maybe I should explain the perks... 🥺</p>
+        <button class="btn btn-yes" onclick="showSection('sectionProsCons')">Okay</button>
+    </div>
+
+    <div class="container hidden" id="sectionProsCons">
+        <h3 style="font-size: 1rem;">Why You Should Choose me ❤️</h3>
+        <div class="pros-cons-grid">
+            <div class="box">
+                <span style="color: #2ecc71; font-weight: bold;">❤️ Pros</span>
+                <p id="proText" style="font-size: 0.8rem; margin: 10px 0;">I'll cook your fav food like it's my love language 🍳</p>
+                <div class="swiper-controls">
+                    <button class="swiper-btn" onclick="prevPro()">❮</button>
+                    <div class="dots" id="proDots">
+                        <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                    </div>
+                    <button class="swiper-btn" onclick="nextPro()">❯</button>
+                </div>
+            </div>
+            <div class="box">
+                <span style="color: #e74c3c; font-weight: bold;">✖ Cons</span>
+                <img src="" style="width: 40px; margin: 0 auto;">
+                <p style="font-size: 0.85rem;">Nothing!!!!🤭</p>
+            </div>
+        </div>
+        <button class="btn btn-yes" style="margin-top: 20px;" onclick="showSection('sectionSuccess')">Choosing me as your lifeline</button>
+    </div>
+
+    <div class="container hidden" id="sectionSuccess">
+        <img class="main-gif" src="">
+        <h1>YAYYYYY!!! 💚</h1>
+        <p>That's the Best decision ever 🫶</p>
+        <div class="ily-text">I LOVE YOU 💚😘</div>
+        <button class="btn btn-p" onclick="showSection('sectionGifts')">Click here for your gifts, Meenu</button>
+    </div>
+
+    <div class="container hidden" id="sectionGifts">
+        <h3 style="color: var(--accent-pink);">💝 Your Valentine Gifts 💝</h3>
+        <div class="gift-grid">
+            <div class="gift-box" onclick="showSection('giftMusic')">💚<br>Gift 1</div>
+            <div class="gift-box" onclick="showSection('giftLetter')">💚<br>Gift 2</div>
+            <div class="gift-box" onclick="showSection('giftPhotos')">💚<br>Gift 3</div>
+        </div>
+        <button class="btn btn-no" style="margin-top:20px; font-size: 0.8rem;" onclick="showSection('section1')">Back to Love</button>
+    </div>
+
+    <div class="container hidden" id="giftMusic">
+        <h3 style="color: var(--accent-pink);">Our Love Sounds Like This! 🎵</h3>
+        <div id="main-player">
+            <img id="currImg" src="https://via.placeholder.com/100/ff4d6d/ffffff?text=Music" style="width: 80px; border-radius: 10px; margin-bottom: 10px;">
+            <h4 id="currTitle" style="margin: 5px 0; font-size: 0.9rem;">Select a Song</h4>
+            <audio id="player" controls style="width: 100%; height: 30px;"><source id="audioSrc" src="" type="audio/mpeg"></audio>
+        </div>
+        <div class="playlist-container">
+            <div class="playlist-item" onclick="playSong('Oru Kili', 'Oru-Killi-Oru-Killi.mp3', 'images/okjpg.jpg')"><span>01. Oru Kili</span><small>Leelai</small></div>
+            <div class="playlist-item" onclick="playSong('Enthara', 'Enthara-Enthara.mp3', 'images/ent.jpg')"><span>02. Enthara</span><small>T.E.N</small></div>
+            <div class="playlist-item" onclick="playSong('Endha pakkam', 'Endha-Pakkam.mp3', 'images/endha.jpg')"><span>03. Endha pakkam</span><small>Dharmadurai</small></div>
+            <div class="playlist-item" onclick="playSong('Pookal pookum', 'Pookal-Pookum.mp3', 'images/poo.jpg')"><span>04. Pookal pookum</span><small>Madharasapattinam</small></div>
+            <div class="playlist-item" onclick="playSong('Yeya en kottikaara', 'Yeya-En-Kottikkaaraa.mp3', 'images/papanjpg.jpg')"><span>05. Yeye en kottikaara</span><small>Papanasam</small></div>
+            <div class="playlist-item" onclick="playSong('Aval', 'Aval.mp3', 'images/aval.jpg')"><span>06. Aval</span><small>Manithan</small></div>
+            <div class="playlist-item" onclick="playSong('Aaruyire', 'Aaruyire.mp3', 'images/aauyir.jpg')"><span>07. Aaruyire</span><small>Guru</small></div>
+            <div class="playlist-item" onclick="playSong('Para-para', 'Para-Para.mp3', 'images/para.jpg')"><span>08. Para-para</span><small>Neerparavai</small></div>
+            <div class="playlist-item" onclick="playSong('Aagayam', 'Aagayam.mp3', 'images/ue.jpg')"><span>09. Aagayam</span><small>unakum enakum</small></div>
+            <div class="playlist-item" onclick="playSong('Kannana kanne', 'Kannana-Kanne.mp3', 'images/kk.jpg')"><span>10. Kannana kanne</span><small>N.R.D</small></div>
+        </div>
+        <button class="btn btn-no" style="margin-top:10px;" onclick="showSection('sectionGifts')">Back to Gifts</button>
+    </div>
+
+    <div class="container hidden" id="giftLetter">
+        <h3 style="color: var(--accent-pink);">To the Girl I Love most! 💚</h3>
+        <div class="envelope-wrapper" id="envelope" onclick="openLetter()">
+            <div class="heart-btn">❤️</div>
+            <div class="letter-content">
+                <p style="margin-top: 0;"><b>To My Dhaaraa,</b></p>
+                <p><span style="color:var(--accent-pink); font-weight:bold;"></span> Papa, naa unaku 3 visayam sollanum </p>
+                <p><span style="color:var(--accent-pink); font-weight:bold;">1. SORRY</span> indha sorry edhuku na nee enakaga neraya edhatula ninnukuka enna guide panniruka support panniruka andha time la naa un words ah kekama unna romba hurt pannirukan sanda poturukan un kitta pesama kuda konja naal irundurukan aana nee ennoda nalladu kaga dhan solliruka nu enaku late ah dhan puriyum aana na un kitta normal ah pesa start panniduvan adhukaga un kitta sorry ketadu illa adhukaga dhan indha sorry</p>
+                <p><span style="color:var(--accent-pink); font-weight:bold;">2. THANK YOU</span> indha thanks eduku nu patha na enna dhan un pecha kekala naalum nee expect panta maari person ah naa illa naalum endha idhatulayum edhukagavum yaar kittayum eppayum enn vitu kudukama en kudave irukuraduku indha thank you adhu mattum illama enna guide panraduku romba periya thank you</p>
+                <p><span style="color:var(--accent-pink); font-weight:bold;">3. I LOVE YOU</span> endha neratula naa unna follow pannano nee enna accept panniyo theriyala aana andha neram dhan en vazhkayodaiya happiest time start aaga pogudhu nu appo enaku theriyala ....natkal poga poga nammalaye ariyama nammaloda soul connect aagiduchu. unaku edhana onnu na inga naa feel panradhum enaku edhana onnu na nee anga feel panradhum idhuku per dhan kadhal nu solluvangala.....illa idhuku per dhan kadhal nu solluvanga.... I Love You as you are😘</p>
+                <p style="text-align: right;"><i>Forever yours, Inba</i></p>
+            </div>
+        </div>
+        <button class="btn btn-no" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);" onclick="closeLetterAndBack()">Back to Gifts</button>
+    </div>
+
+    <div class="container hidden" id="giftPhotos">
+        <h3 style="color: var(--accent-pink);">Every Moment With You! 📸</h3>
+        <div class="photo-grid">
+            <div class="photo-card"><img src="images/img 1.jpeg"><p>💚 They called you a fake ID, but for me, you were the only real thing I ever found 💚</p></div>
+            <div class="photo-card"><img src="images/img 2.jpeg"><p>💚 The first picture you sent, the exact moment my heart went... and I fell for you forever 💚</p></div>
+            <div class="photo-card"><img src="images/img 3.jpeg"><p>💚 "When my hand found yours for the first time, a rhythm was born I’ll never forget. A single touch was all it took, to write the best chapter in my life’s book." 💚</p></div>
+            <div class="photo-card"><img src="images/img 4.jpeg"><p>💚 Our first fight, making it right... even in your anger, your eyes were the most beautiful sight 💚</p></div>
+            <div class="photo-card"><img src="images/img 5.jpeg"><p> 💚 Years may fly and photos may grow, but this moment is the purest love we'll ever know. Our love only gets stronger. ♾️💚Always & Forever 🫂</p></div>
+        </div>
+        <button class="btn btn-no" onclick="showSection('sectionGifts')">Back to Gifts</button>
+    </div>
+
+    <script>
+        const pros = [
+           "I'll cook your favorite food like it's my love language 🍳", 
+    "Always ready to lose an argument just to see you win ❤️", 
+    "24/7 Unlimited free hugs and forehead kisses (No subscription needed!) 💋",
+    "Professional expert in handling your mood swings with love 🎓",
+    "Your personal photographer who thinks you're the prettiest model 📸",
+    "I'll be the person who listens to your 2:00 AM rants with full interest 👂",
+    "Promised to call you 'Papa' and treat you like a queen forever 👑"
+        ];
+        let proIdx = 0;
+        let dodgeCount = 0;
+
+        function showSection(id) {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function openLetter() { document.getElementById('envelope').classList.add('open'); }
+        function closeLetterAndBack() { document.getElementById('envelope').classList.remove('open'); showSection('sectionGifts'); }
+
+        function updatePro() {
+            document.getElementById('proText').innerText = pros[proIdx];
+            document.querySelectorAll('#proDots .dot').forEach((dot, idx) => dot.classList.toggle('active', idx === proIdx));
+        }
+        function nextPro() { proIdx = (proIdx + 1) % pros.length; updatePro(); }
+        function prevPro() { proIdx = (proIdx - 1 + pros.length) % pros.length; updatePro(); }
+
+        // --- NEW DODGE LOGIC ---
+        function dodgeNo() {
+            dodgeCount++;
+            const noBtn = document.getElementById('noBtn');
+            
+            if (dodgeCount < 6) {
+                // Generate relative movements so it stays inside its container area
+                const randomX = (Math.random() - 0.5) * 200; // Move up to 100px left or right
+                const randomY = (Math.random() - 0.5) * 100; // Move up to 50px up or down
+                noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            } else {
+                // After 6 attempts, automatically go to the Perks section
+                showSection('sectionPerks');
+                noBtn.style.transform = "translate(0, 0)"; // Reset position
+                dodgeCount = 0;
+            }
+        }
+
+        function playSong(title, url, img) {
+            const titleDisplay = document.getElementById('currTitle');
+            const imageDisplay = document.getElementById('currImg');
+            const audio = document.getElementById('player');
+            const source = document.getElementById('audioSrc');
+
+            titleDisplay.innerText = title;
+            if(img) imageDisplay.src = img;
+            source.src = url;
+            
+            audio.load();
+            audio.play().catch(e => console.log("User interaction required for playback"));
+        }
+    </script>
+</body>
+</html>
